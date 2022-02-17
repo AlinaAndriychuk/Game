@@ -25,12 +25,12 @@ function () {
   function Ship(x, y) {
     _classCallCheck(this, Ship);
 
-    this.shape = new PIXI.Graphics();
-    this.shape.lineStyle(2, 0xffffff);
+    this.figure = new PIXI.Graphics();
+    this.figure.lineStyle(2, 0xffffff);
     this.fire = new PIXI.Graphics();
     this.fire.lineStyle(1.5, 0xffffff);
     this.hideFire = true;
-    this.shapePoint = new PIXI.Graphics();
+    this.figurePoint = new PIXI.Graphics();
     this.x = x || 0;
     this.y = y || 0;
     this.power = 5;
@@ -48,25 +48,25 @@ function () {
         return;
       }
 
-      if (this.shape.angle >= 360 || this.shape.angle <= -360) {
-        this.shape.angle = 0;
+      if (this.figure.angle >= 360 || this.figure.angle <= -360) {
+        this.figure.angle = 0;
       }
 
       this.isRotating = true;
-      this.shape.angle += vr;
+      this.figure.angle += vr;
       this.rotateRAF = window.requestAnimationFrame(this.rotate.bind(this, friction - 1, vr));
     }
   }, {
     key: "countDirection",
     value: function countDirection() {
-      var dx = this.shapePoint.getGlobalPosition().x - this.shape.x;
-      var dy = this.shapePoint.getGlobalPosition().y - this.shape.y; // interaction
+      var dx = this.figurePoint.getGlobalPosition().x - this.figure.x;
+      var dy = this.figurePoint.getGlobalPosition().y - this.figure.y; // interaction
 
       var angle = Math.atan2(dy, dx);
-      var tx = this.shape.x + Math.cos(angle);
-      var ty = this.shape.y + Math.sin(angle);
-      this.vx = (tx - this.shape.x) * this.power;
-      this.vy = (ty - this.shape.y) * this.power;
+      var tx = this.figure.x + Math.cos(angle);
+      var ty = this.figure.y + Math.sin(angle);
+      this.vx = (tx - this.figure.x) * this.power;
+      this.vy = (ty - this.figure.y) * this.power;
     }
   }, {
     key: "move",
@@ -82,8 +82,8 @@ function () {
       this.switchFire();
       this.think(width, height);
       this.countDirection();
-      this.shape.x += this.vx;
-      this.shape.y += this.vy;
+      this.figure.x += this.vx;
+      this.figure.y += this.vy;
       this.moveRAF = window.requestAnimationFrame(this.move.bind(this, friction - 1, v, width, height));
     }
   }, {
@@ -92,48 +92,48 @@ function () {
       var value = hide || !this.hideFire;
 
       if (value) {
-        this.shape.removeChild(this.fire);
+        this.figure.removeChild(this.fire);
       } else {
-        this.shape.addChild(this.fire);
+        this.figure.addChild(this.fire);
       }
     }
   }, {
     key: "think",
     value: function think(width, height) {
-      var x = this.shape.x;
-      var y = this.shape.y;
+      var x = this.figure.x;
+      var y = this.figure.y;
 
       if (x > width) {
-        this.shape.x = -this.width;
+        this.figure.x = -this.width;
       } else if (x + this.width < 0) {
-        this.shape.x = width;
+        this.figure.x = width;
       }
 
       if (y > height) {
-        this.shape.y = -this.width;
+        this.figure.y = -this.width;
       } else if (y + this.width < 0) {
-        this.shape.y = height;
+        this.figure.y = height;
       }
     }
   }, {
     key: "scale",
     value: function scale(coefficient) {
-      this.shape.scale.set(coefficient);
+      this.figure.scale.set(coefficient);
     }
   }, {
     key: "draw",
     value: function draw() {
-      this.shape.drawPolygon([0, 46, 14, 0, 28, 46, 25, 37, 3, 37]);
-      this.shape.endFill();
-      this.shape.pivot.set(this.width / 2, this.height / 2);
-      this.shape.y = this.y;
-      this.shape.x = this.x;
+      this.figure.drawPolygon([0, 46, 14, 0, 28, 46, 25, 37, 3, 37]);
+      this.figure.endFill();
+      this.figure.pivot.set(this.width / 2, this.height / 2);
+      this.figure.y = this.y;
+      this.figure.x = this.x;
       this.fire.drawPolygon([20, 37, 14, 52, 8, 37]);
       this.fire.endFill();
-      this.shapePoint.drawCircle(0, 0, 0);
-      this.shapePoint.endFill();
-      this.shapePoint.x = this.width / 2;
-      this.shape.addChild(this.shapePoint);
+      this.figurePoint.drawCircle(0, 0, 0);
+      this.figurePoint.endFill();
+      this.figurePoint.x = this.width / 2;
+      this.figure.addChild(this.figurePoint);
     }
   }]);
 

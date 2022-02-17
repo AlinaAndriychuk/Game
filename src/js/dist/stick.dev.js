@@ -25,8 +25,8 @@ function () {
   function Stick(x, y, centerX, centerY, angle) {
     _classCallCheck(this, Stick);
 
-    this.shape = new PIXI.Graphics();
-    this.shape.beginFill(0xfffffff);
+    this.figure = new PIXI.Graphics();
+    this.figure.beginFill(0xfffffff);
     this.x = x || 0;
     this.y = y || 0;
     this.angle = angle;
@@ -60,17 +60,17 @@ function () {
   }, {
     key: "move",
     value: function move() {
-      this.shape.x += this.vx;
-      this.shape.y += this.vy;
+      this.figure.x += this.vx;
+      this.figure.y += this.vy;
     }
   }, {
     key: "draw",
     value: function draw() {
-      this.shape.drawRect(0, 0, this.width, this.height);
-      this.shape.endFill();
-      this.shape.x = this.x;
-      this.shape.y = this.y;
-      this.shape.angle = this.angle;
+      this.figure.drawRect(0, 0, this.width, this.height);
+      this.figure.endFill();
+      this.figure.x = this.x;
+      this.figure.y = this.y;
+      this.figure.angle = this.angle;
     }
   }]);
 

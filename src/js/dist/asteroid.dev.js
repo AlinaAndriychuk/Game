@@ -25,8 +25,8 @@ function () {
   function Asteroid(x, y, vx, vy, size) {
     _classCallCheck(this, Asteroid);
 
-    this.shape = new PIXI.Graphics();
-    this.shape.lineStyle(2, 0xffffff);
+    this.figure = new PIXI.Graphics();
+    this.figure.lineStyle(2, 0xffffff);
     this.x = x || 0;
     this.y = y || 0;
     this.vx = vx || 0;
@@ -60,19 +60,19 @@ function () {
   }, {
     key: "scale",
     value: function scale(coefficient) {
-      this.shape.scale.set(coefficient / this.size);
+      this.figure.scale.set(coefficient / this.size);
     }
   }, {
     key: "move",
     value: function move() {
-      this.shape.x = this.x;
-      this.shape.y = this.y;
+      this.figure.x = this.x;
+      this.figure.y = this.y;
     }
   }, {
     key: "draw",
     value: function draw() {
-      this.shape.drawPolygon([0, 25, 37, 25, 27, 3, 60, 0, 100, 25, 100, 35, 52, 48, 100, 68, 77, 97, 56, 82, 20, 100, 0, 60]);
-      this.shape.endFill();
+      this.figure.drawPolygon([0, 25, 37, 25, 27, 3, 60, 0, 100, 25, 100, 35, 52, 48, 100, 68, 77, 97, 56, 82, 20, 100, 0, 60]);
+      this.figure.endFill();
       this.move();
     }
   }]);

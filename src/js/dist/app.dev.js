@@ -85,12 +85,12 @@ function () {
 
       for (var i = 0; i < this.asteroidsLimit; i++) {
         var asteroid = new _asteroid["default"](this.randomInteger(0, this.width), this.randomInteger(0, this.height), this.randomVector(), this.randomVector(), this.randomInteger(1, 3));
-        this.canvas.stage.addChild(asteroid.shape);
+        this.canvas.stage.addChild(asteroid.figure);
         this.asteroids.push(asteroid);
       }
 
       this.ship = new _ship["default"](this.width / 2, this.height / 2);
-      this.canvas.stage.addChild(this.ship.shape);
+      this.canvas.stage.addChild(this.ship.figure);
       this.setHitPoints();
       this.resize();
     }
@@ -102,7 +102,7 @@ function () {
 
       for (var i = 0; i < this.numberOfhitPoints; i++) {
         var hitPoint = new _ship["default"](left + i * (this.ship.width + interval), this.ship.height);
-        this.canvas.stage.addChild(hitPoint.shape);
+        this.canvas.stage.addChild(hitPoint.figure);
         this.hitPoints.push(hitPoint);
       }
     }
@@ -111,7 +111,7 @@ function () {
     value: function subtractHitPoint() {
       var _this = this;
 
-      this.canvas.stage.removeChild(this.hitPoints[this.hitPoints.length - 1].shape);
+      this.canvas.stage.removeChild(this.hitPoints[this.hitPoints.length - 1].figure);
       this.hitPoints.pop();
       this.ship = null;
       this.createShip = true;
@@ -125,7 +125,7 @@ function () {
           if (_this.createShip) {
             _this.ship = new _ship["default"](_this.width / 2, _this.height / 2);
 
-            _this.canvas.stage.addChild(_this.ship.shape);
+            _this.canvas.stage.addChild(_this.ship.figure);
           }
         }, 1000);
       }
@@ -183,13 +183,9 @@ function () {
         this.ship.rotate(10, 4);
       }
 
-      if (event.code === 'ArrowDown' && !this.ship.isRotating) {
-        console.log(this.shots);
-      }
-
       if (event.code === 'Space' && !this.ship.isRotating) {
-        var shot = new _shot["default"](this.ship.shapePoint.getGlobalPosition().x, this.ship.shapePoint.getGlobalPosition().y, this.ship.shape.x, this.ship.shape.y);
-        this.canvas.stage.addChild(shot.shape);
+        var shot = new _shot["default"](this.ship.figurePoint.getGlobalPosition().x, this.ship.figurePoint.getGlobalPosition().y, this.ship.figure.x, this.ship.figure.y);
+        this.canvas.stage.addChild(shot.figure);
         this.shots.push(shot);
       }
     }
@@ -197,9 +193,9 @@ function () {
     key: "shipCollision",
     value: function shipCollision(asteroid, index) {
       this.defineAsteroid(asteroid, index);
-      this.brokeShip(this.ship.shape.x, this.ship.shape.y);
+      this.brokeShip(this.ship.figure.x, this.ship.figure.y);
       this.boom(asteroid.x, asteroid.y);
-      this.canvas.stage.removeChild(this.ship.shape);
+      this.canvas.stage.removeChild(this.ship.figure);
       this.subtractHitPoint();
     }
   }, {
@@ -226,9 +222,9 @@ function () {
     value: function splitAsteroid(asteroid, index) {
       var asteroidOne = new _asteroid["default"](asteroid.x, asteroid.y, this.randomVector(), this.randomVector(), asteroid.size + 1);
       var asteroidTwo = new _asteroid["default"](asteroid.x, asteroid.y, this.randomVector(), this.randomVector(), asteroid.size + 1);
-      this.canvas.stage.removeChild(asteroid.shape);
-      this.canvas.stage.addChild(asteroidOne.shape);
-      this.canvas.stage.addChild(asteroidTwo.shape);
+      this.canvas.stage.removeChild(asteroid.figure);
+      this.canvas.stage.addChild(asteroidOne.figure);
+      this.canvas.stage.addChild(asteroidTwo.figure);
       this.asteroids.splice(index, 1, asteroidOne, asteroidTwo);
       this.resize();
     }
@@ -236,7 +232,7 @@ function () {
     key: "addBigAsteroid",
     value: function addBigAsteroid() {
       var asteroid = new _asteroid["default"](this.randomInteger(0, this.width), this.height, this.randomVector(), this.randomVector(), 1);
-      this.canvas.stage.addChild(asteroid.shape);
+      this.canvas.stage.addChild(asteroid.figure);
       this.asteroids.push(asteroid);
       this.resize();
     }
@@ -250,7 +246,7 @@ function () {
       var _loop = function _loop(i) {
         var stick = new _stick["default"](x, y, _this2.randomVector() + x, _this2.randomVector() + y, _this2.randomInteger(0, 360));
 
-        _this2.canvas.stage.addChild(stick.shape);
+        _this2.canvas.stage.addChild(stick.figure);
 
         _this2.sticks.push(stick);
 
@@ -274,7 +270,7 @@ function () {
       var _loop2 = function _loop2(i) {
         var point = new _shot["default"](x, y, _this3.randomVector() + x, _this3.randomVector() + y, friction);
 
-        _this3.canvas.stage.addChild(point.shape);
+        _this3.canvas.stage.addChild(point.figure);
 
         _this3.points.push(point);
 
@@ -296,7 +292,7 @@ function () {
   }, {
     key: "removeGraphics",
     value: function removeGraphics(elem, arr) {
-      this.canvas.stage.removeChild(elem.shape);
+      this.canvas.stage.removeChild(elem.figure);
       arr.splice(arr.indexOf(elem), 1);
     }
   }, {
@@ -309,7 +305,7 @@ function () {
         asteroid.think(_this4.width, _this4.height);
         asteroid.move();
 
-        if (_this4.ship && _this4.hitTestRectangle(asteroid.shape, _this4.ship.shape)) {
+        if (_this4.ship && _this4.hitTestRectangle(asteroid.figure, _this4.ship.figure)) {
           _this4.shipCollision(asteroid, index);
         }
       });
@@ -321,12 +317,12 @@ function () {
         }
 
         _this4.asteroids.forEach(function (asteroid, indexOfAsteroid) {
-          if (_this4.canvas.stage.children.includes(shot.shape) && _this4.hitTestRectangle(asteroid.shape, shot.shape)) {
+          if (_this4.canvas.stage.children.includes(shot.figure) && _this4.hitTestRectangle(asteroid.figure, shot.figure)) {
             _this4.defineAsteroid(asteroid, indexOfAsteroid);
 
             _this4.boom(asteroid.x, asteroid.y);
 
-            _this4.canvas.stage.removeChild(shot.shape);
+            _this4.canvas.stage.removeChild(shot.figure);
           }
         });
       });

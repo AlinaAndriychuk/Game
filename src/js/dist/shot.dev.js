@@ -25,8 +25,8 @@ function () {
   function Shot(x, y, centerX, centerY, friction) {
     _classCallCheck(this, Shot);
 
-    this.shape = new PIXI.Graphics();
-    this.shape.beginFill(0xfffffff);
+    this.figure = new PIXI.Graphics();
+    this.figure.beginFill(0xfffffff);
     this.x = x || 0;
     this.y = y || 0;
     this.centerX = centerX || 0;
@@ -58,13 +58,13 @@ function () {
   }, {
     key: "scale",
     value: function scale(coefficient) {
-      this.shape.scale.set(coefficient);
+      this.figure.scale.set(coefficient);
     }
   }, {
     key: "hidden",
     value: function hidden(width, height) {
-      var x = this.shape.x;
-      var y = this.shape.y;
+      var x = this.figure.x;
+      var y = this.figure.y;
 
       if (x > width || x + this.radius < 0 || y > height || y + this.radius < 0) {
         return true;
@@ -75,16 +75,16 @@ function () {
   }, {
     key: "move",
     value: function move() {
-      this.shape.x += this.vx;
-      this.shape.y += this.vy;
+      this.figure.x += this.vx;
+      this.figure.y += this.vy;
     }
   }, {
     key: "draw",
     value: function draw() {
-      this.shape.drawCircle(0, 0, this.radius);
-      this.shape.endFill();
-      this.shape.x = this.x;
-      this.shape.y = this.y;
+      this.figure.drawCircle(0, 0, this.radius);
+      this.figure.endFill();
+      this.figure.x = this.x;
+      this.figure.y = this.y;
     }
   }]);
 
